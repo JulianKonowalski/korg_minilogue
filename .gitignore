@@ -1,0 +1,8 @@
+#vscode config dir
+.vscode/
+
+# JUCE repo
+JUCE/
+
+# build files
+build/
