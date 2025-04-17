@@ -34,8 +34,6 @@ void VCO::setShape(const float& shape) {
   else { mShape = shape; }
 }
 
-#include <iostream>
-
 [[nodiscard]] float VCO::getSample (float& angle, float frequency) {
   if(mFineTune != 0.0f) { frequency *= std::powf(2, mFineTune); }
   float offset = frequency * mDeltaTime;

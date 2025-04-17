@@ -9,11 +9,30 @@ Minilogue::Minilogue(void) :
   mVco1.setFineTune(0.002f);
 }
 
-void Minilogue::update(void* buffer, unsigned int frames) {
-  short* d = (short*)buffer;
-  for(unsigned int i = 0; i < frames; ++i) {
-    d[i] = (short)(32000.0f * this->getSample());
-  }
+
+void Minilogue::noteOn(
+  const int& midiNoteNumber, 
+  const int& midiNoteVelocity, 
+  const int& samplePosition
+) {
+  mVoice.noteOn(midiNoteNumber);
+}
+
+void Minilogue::noteOff(
+  const int& midiNoteNumber, 
+  const int& midiNoteVelocity, 
+  const int& samplePosition
+) {
+  mVoice.noteOff(midiNoteNumber);
+}
+
+void Minilogue::processBlock(
+  float* lChannelBuffer, 
+  float* rChannelBuffer, 
+  const int& bufferSize
+) {
+  for(int i = 0; i < bufferSize; ++i)
+    lChannelBuffer[i] = rChannelBuffer[i] = this->getSample();
 }
 
 float Minilogue::getSample(void) {

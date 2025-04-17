@@ -11,15 +11,15 @@ namespace minilogue {
 class Minilogue {
 public:
   Minilogue(void);
- 
-  void playNote(const uint8_t& midiNote) { mVoice.noteOn(midiNote); }
-  void stopNote(const uint8_t& midiNote) { mVoice.noteOff(midiNote); }
+
   void setOscType(const VCO::OSC_TYPE& oscType) { mVco1.setOscillatorType(oscType); }
-  void update(void* buffer, unsigned int frames);
+ 
+  void noteOn(const int& midiNoteNumber, const int& midiNoteVelocity, const int& samplePosition);
+  void noteOff(const int& midiNoteNumber, const int& midiNoteVelocity, const int& samplePosition);
+  void processBlock(float* lChannelBuffer, float* rChannelBuffer, const int& bufferSize);
+
   
 private:
-
-  static constexpr uint8_t NUM_VOICES = 1;
 
   float getSample(void);
 
