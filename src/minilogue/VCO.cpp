@@ -1,4 +1,4 @@
-#include "VCO.h"
+#include "minilogue/VCO.h"
 
 #include <cmath>
 

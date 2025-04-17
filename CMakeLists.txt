@@ -25,7 +25,6 @@ project(MINILOGUE_VST VERSION 0.0.1)
 # find_package(JUCE CONFIG REQUIRED)        # If you've installed JUCE to your system
 # or
 add_subdirectory(JUCE)                    # If you've put JUCE in a subdirectory called JUCE
-add_subdirectory(minilogue_lib)
 
 # If you are building a VST2 or AAX plugin, CMake needs to be told where to find these SDKs on your
 # system. This setup should be done before calling `juce_add_plugin`.
@@ -70,8 +69,8 @@ juce_add_plugin(Minilogue_VST
 
 target_sources(Minilogue_VST
     PRIVATE
-        PluginEditor.cpp
-        PluginProcessor.cpp)
+        src/plugin/PluginEditor.cpp
+        src/plugin/PluginProcessor.cpp)
 
 # `target_compile_definitions` adds some preprocessor definitions to our target. In a Projucer
 # project, these might be passed in the 'Preprocessor Definitions' field. JUCE modules also make use
@@ -96,6 +95,13 @@ target_compile_definitions(Minilogue_VST
 
 # juce_add_binary_data(AudioPluginData SOURCES ...)
 
+add_library(
+    MINILOGUE_LIB
+    src/minilogue/Minilogue.cpp
+    src/minilogue/VCO.cpp
+    src/minilogue/Voice.cpp
+)
+
 # `target_link_libraries` links libraries and JUCE modules to other libraries or executables. Here,
 # we're linking our executable target to the `juce::juce_audio_utils` module. Inter-module
 # dependencies are resolved automatically, so `juce_core`, `juce_events` and so on will also be
@@ -110,3 +116,5 @@ target_link_libraries(Minilogue_VST
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
+
+include_directories("C:/Users/Julek/Desktop/Szkoła/GitProjects/minilogue_vst/include")

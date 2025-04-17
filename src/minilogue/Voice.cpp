@@ -1,4 +1,4 @@
-#include "Voice.h"
+#include "minilogue/Voice.h"
 
 using namespace minilogue;
 

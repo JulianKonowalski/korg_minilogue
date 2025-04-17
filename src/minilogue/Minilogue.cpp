@@ -1,4 +1,4 @@
-#include "Minilogue.h"
+#include "minilogue/Minilogue.h"
 
 using namespace minilogue;
 
