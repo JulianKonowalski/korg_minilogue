@@ -2,9 +2,10 @@
 
 using namespace minilogue;
 
-Voice::Voice(VCO& vco1, VCO& vco2) :
+Voice::Voice(VCO& vco1, VCO& vco2, Mixer& mixer) :
   mVco1(&vco1),
   mVco2(&vco2),
+  mMixer(&mixer),
   mIsActive(false),
   mFrequency(440.0f),
   mAngle1(0.0f),
@@ -26,8 +27,11 @@ void Voice::noteOff(const uint8_t& midiNote) {
 
 [[nodiscard]] float Voice::process(void) {
   if (!mIsActive) { return 0.0f; }
-  float sample = 0.0f;
-  sample += mVco1->getSample(mAngle1, mFrequency);
-  sample += mVco2->getSample(mAngle2, 0.5f * mFrequency);
-  return sample / 2.0f;
+  float sample = mMixer->getSample(
+    mVco1->getSample(mAngle1, mFrequency),
+    mVco2->getSample(mAngle2, mFrequency)
+  );
+  // sample += mVco1->getSample(mAngle1, mFrequency);
+  // sample += mVco2->getSample(mAngle2, 0.5f * mFrequency);
+  return sample;
 }

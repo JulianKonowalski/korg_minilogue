@@ -3,7 +3,8 @@
 
 #include <cmath>
 
-#include "VCO.h"
+#include "minilogue/VCO.h"
+#include "minilogue/Mixer.h"
 
 namespace minilogue
 {
@@ -11,7 +12,7 @@ namespace minilogue
 class Voice {
 public:
 
-  Voice(VCO& vco1, VCO& vco2);
+  Voice(VCO& vco1, VCO& vco2, Mixer& mixer);
 
   [[nodiscard]] uint8_t getMidiNote(void) { return mMidiNote; }
 
@@ -24,9 +25,7 @@ private:
 
   VCO* mVco1;
   VCO* mVco2;
-  /**
-  * Mixer mMixer;
-  */
+  Mixer* mMixer;
 
   bool mIsActive;
   float mFrequency;

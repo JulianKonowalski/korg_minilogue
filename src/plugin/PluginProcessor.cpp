@@ -135,13 +135,24 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
 
+    //update state
+    // mMinilogue.setVCO1Fine()
+
     //process midi
     for(const juce::MidiMessageMetadata& metadata : midiMessages) {
         juce::MidiMessage message = metadata.getMessage();
         if(message.isNoteOn()) {
-            mMinilogue.noteOn(message.getNoteNumber(), message.getVelocity(), metadata.samplePosition);
+            mMinilogue.noteOn(
+                message.getNoteNumber(), 
+                message.getVelocity(), 
+                metadata.samplePosition
+            );
         } else if (message.isNoteOff()) {
-            mMinilogue.noteOff(message.getNoteNumber(), message.getVelocity(), metadata.samplePosition);
+            mMinilogue.noteOff(
+                message.getNoteNumber(), 
+                message.getVelocity(), 
+                metadata.samplePosition
+            );
         } else if (message.isPitchWheel()) {
             //for now ignore
         }
