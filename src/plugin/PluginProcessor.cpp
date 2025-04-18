@@ -13,13 +13,19 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
                        )
 {
     /* VCO SETTINGS */
-    this->attachListener("vco1Fine", [&](const float& value){ this->getSynth().setVCO1FineTune(value); });
-    this->attachListener("vco2Fine", [&](const float& value){ this->getSynth().setVCO2FineTune(value); });
+    this->attachListener("vco1Oct", [&](const float& value){ this->getSynth().setVCO1Octave((uint8_t)value); });
+    this->attachListener("vco2Oct", [&](const float& value){ this->getSynth().setVCO2Octave((uint8_t)value); });
+    this->attachListener("vco1Typ", [&](const float& value){ this->getSynth().setVCO1OscType((minilogue::VCO::OSC_TYPE)value); });
+    this->attachListener("vco2Typ", [&](const float& value){ this->getSynth().setVCO2OscType((minilogue::VCO::OSC_TYPE)value); });
+    this->attachListener("vco1Fin", [&](const float& value){ this->getSynth().setVCO1FineTune(value); });
+    this->attachListener("vco2Fin", [&](const float& value){ this->getSynth().setVCO2FineTune(value); });
+    this->attachListener("vco1Shp", [&](const float& value){ this->getSynth().setVCO1Shape(value); });
+    this->attachListener("vco2Shp", [&](const float& value){ this->getSynth().setVCO2Shape(value); });
 
     /* MIXER SETTINGS */
-    this->attachListener("vco1Volume", [&](const float& value){ this->getSynth().setVCO1Level(value); });
-    this->attachListener("vco2Volume", [&](const float& value){ this->getSynth().setVCO2Level(value); });
-    this->attachListener("noiseVolume", [&](const float& value){ this->getSynth().setNoiseLevel(value); });
+    this->attachListener("vco1Vol", [&](const float& value){ this->getSynth().setVCO1Level(value); });
+    this->attachListener("vco2Vol", [&](const float& value){ this->getSynth().setVCO2Level(value); });
+    this->attachListener("noiseVol", [&](const float& value){ this->getSynth().setNoiseLevel(value); });
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -191,13 +197,19 @@ AudioPluginAudioProcessor::createParameterLayout(void) {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
     /* VCO SETTINGS */
-    this->attachParameter(layout, "vco1Fine", "VCO1 Fine Tune", juce::NormalisableRange(-1.0f, 1.0f, 0.001f, 0.5f, true), 0.0f);
-    this->attachParameter(layout, "vco2Fine", "VCO2 Fine Tune", juce::NormalisableRange(-1.0f, 1.0f, 0.001f, 0.5f, true), 0.0f);
+    this->attachParameter(layout, "vco1Oct", "VCO1 Octave", juce::NormalisableRange(0.0f, 3.0f, 1.0f), 1.0f);
+    this->attachParameter(layout, "vco2Oct", "VCO2 Octave", juce::NormalisableRange(0.0f, 3.0f, 1.0f), 1.0f);
+    this->attachParameter(layout, "vco1Typ", "VCO1 Type", juce::NormalisableRange(0.0f, 2.0f, 1.0f), 0.0f);
+    this->attachParameter(layout, "vco2Typ", "VCO2 Type", juce::NormalisableRange(0.0f, 2.0f, 1.0f), 0.0f);
+    this->attachParameter(layout, "vco1Fin", "VCO1 Fine Tune", juce::NormalisableRange(-1.0f, 1.0f, 0.001f, 0.5f, true), 0.0f);
+    this->attachParameter(layout, "vco2Fin", "VCO2 Fine Tune", juce::NormalisableRange(-1.0f, 1.0f, 0.001f, 0.5f, true), 0.0f);
+    this->attachParameter(layout, "vco1Shp", "VCO1 Shape", juce::NormalisableRange(0.0f, 1.0f, 0.001f), 0.0f);
+    this->attachParameter(layout, "vco2Shp", "VCO2 Shape", juce::NormalisableRange(0.0f, 1.0f, 0.001f), 0.0f);
 
     /* MIXER SETTINGS */
-    this->attachParameter(layout, "vco1Volume", "VCO1 Volume", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 1.0f);
-    this->attachParameter(layout, "vco2Volume", "VCO2 Volume", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 1.0f);
-    this->attachParameter(layout, "noiseVolume", "Noise Volume", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 0.0f);
+    this->attachParameter(layout, "vco1Vol", "VCO1 Volume", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 1.0f);
+    this->attachParameter(layout, "vco2Vol", "VCO2 Volume", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 1.0f);
+    this->attachParameter(layout, "noiseVol", "Noise Volume", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 0.0f);
 
     return layout;
 }

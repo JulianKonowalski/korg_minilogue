@@ -14,8 +14,8 @@ public:
   Minilogue(void);
 
   /* VCO SETTINGS */
-  void setVCO1Octave(const uint8_t& octave) { /* TODO */}
-  void setVCO2Octave(const uint8_t& octave) { /* TODO */}
+  void setVCO1Octave(const uint8_t& octave) { mVco1.setOctave(octave); }
+  void setVCO2Octave(const uint8_t& octave) { mVco2.setOctave(octave); }
 
   void setVCO1OscType(const VCO::OSC_TYPE& oscType) { mVco1.setOscillatorType(oscType); }
   void setVCO2OscType(const VCO::OSC_TYPE& oscType) { mVco2.setOscillatorType(oscType); }

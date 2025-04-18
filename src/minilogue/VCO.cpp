@@ -36,6 +36,7 @@ void VCO::setShape(const float& shape) {
 
 [[nodiscard]] float VCO::getSample (float& angle, float frequency) {
   if(mFineTune != 0.0f) { frequency *= std::powf(2, mFineTune); }
+  frequency *= OCTAVE_COEFFICIENTS[mOctave];
   float offset = frequency * mDeltaTime;
   angle += offset;
   angle -= angle > 1.0f ? 1.0f : 0.0f;
@@ -43,13 +44,14 @@ void VCO::setShape(const float& shape) {
     case SAWTOOTH: 
       return this->sawWave(angle) - this->polyBLEP(angle, offset);
     case TRIANGLE: 
-      return this->triWave(angle);
+      return 0.0f;
     case SQUARE: 
-      return (
-        this->sqrWave(angle) + 
-        this->polyBLEP(angle, offset) - 
-        this->polyBLEP(std::fmod(angle + 0.5f, 1.0f), offset)
-      );
+      return 0.0f;
+      // return (
+      //   this->sqrWave(angle) + 
+      //   this->polyBLEP(angle, offset) - 
+      //   this->polyBLEP(std::fmod(angle + 0.5f, 1.0f), offset)
+      // );
     default: return 0.0f;
   }
 }

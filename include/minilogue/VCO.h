@@ -40,8 +40,10 @@ private:
   static constexpr float DEFAULT_FINE_TUNE = 0.0f;
   static constexpr float DEFAULT_SHAPE = 0.0f;
   static constexpr int DEFAULT_SAMPLE_RATE = 44100;
-  static constexpr short FINE_RANGE = 1200;
 
+  static constexpr short FINE_RANGE = 1200;
+  static constexpr float OCTAVE_COEFFICIENTS[4] = {0.5f, 1.0f, 2.0f, 4.0f};
+  
   inline static int sSampleRate = DEFAULT_SAMPLE_RATE;
 
   [[nodiscard]] float polyBLEP(float t, float dt);
