@@ -12,10 +12,19 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
                      #endif
                        )
 {
+    /* VCO SETTINGS */
+    this->attachListener("vco1Fine", [&](const float& value){ this->getSynth().setVCO1FineTune(value); });
+    this->attachListener("vco2Fine", [&](const float& value){ this->getSynth().setVCO2FineTune(value); });
+
+    /* MIXER SETTINGS */
+    this->attachListener("vco1Volume", [&](const float& value){ this->getSynth().setVCO1Level(value); });
+    this->attachListener("vco2Volume", [&](const float& value){ this->getSynth().setVCO2Level(value); });
+    this->attachListener("noiseVolume", [&](const float& value){ this->getSynth().setNoiseLevel(value); });
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
 {
+    for(auto listener : mOwnedListeners) { delete(listener); }
 }
 
 //==============================================================================
@@ -121,8 +130,6 @@ bool AudioPluginAudioProcessor::isBusesLayoutSupported (const BusesLayout& layou
   #endif
 }
 
-float mAngle = 0.0f;
-
 void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
                                               juce::MidiBuffer& midiMessages)
 {
@@ -175,7 +182,50 @@ bool AudioPluginAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* AudioPluginAudioProcessor::createEditor()
 {
-    return new AudioPluginAudioProcessorEditor (*this);
+    // return new AudioPluginAudioProcessorEditor (*this);
+    return new juce::GenericAudioProcessorEditor(*this);
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout 
+AudioPluginAudioProcessor::createParameterLayout(void) {
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+
+    /* VCO SETTINGS */
+    this->attachParameter(layout, "vco1Fine", "VCO1 Fine Tune", juce::NormalisableRange(-1.0f, 1.0f, 0.001f, 0.5f, true), 0.0f);
+    this->attachParameter(layout, "vco2Fine", "VCO2 Fine Tune", juce::NormalisableRange(-1.0f, 1.0f, 0.001f, 0.5f, true), 0.0f);
+
+    /* MIXER SETTINGS */
+    this->attachParameter(layout, "vco1Volume", "VCO1 Volume", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 1.0f);
+    this->attachParameter(layout, "vco2Volume", "VCO2 Volume", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 1.0f);
+    this->attachParameter(layout, "noiseVolume", "Noise Volume", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 0.0f);
+
+    return layout;
+}
+
+void AudioPluginAudioProcessor::attachParameter(
+    juce::AudioProcessorValueTreeState::ParameterLayout& layout,
+    const juce::String& id, 
+    const juce::String& name, 
+    const juce::NormalisableRange<float>& range, 
+    const float& defaultValue
+) {
+    layout.add(
+        std::make_unique<juce::AudioParameterFloat>(
+            id,
+            name,
+            range,
+            defaultValue
+        )
+    );
+}
+
+void AudioPluginAudioProcessor::attachListener(
+    const juce::String& id, 
+    const std::function<void(const float&)>& callback
+) {
+    ParameterListener* newListener = new ParameterListener(callback);
+    mOwnedListeners.push_back(newListener);
+    mParameters.addParameterListener(id, newListener);
 }
 
 //==============================================================================

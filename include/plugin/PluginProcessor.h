@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <functional>
+
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "minilogue/Minilogue.h"
@@ -44,8 +47,42 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout(void);
+    juce::AudioProcessorValueTreeState mParameters {*this, nullptr, "Parameters", this->createParameterLayout()};
+
+    minilogue::Minilogue& getSynth(void) { return mMinilogue; }
+
+    
+private:
+
+    class ParameterListener : public juce::AudioProcessorValueTreeState::Listener {
+        public:
+            ParameterListener(
+                const std::function<void(const float&)>& callback
+            ) : mCallback(callback)
+            {}
+            void parameterChanged(
+                const juce::String& parameterID, 
+                float newValue
+            ) override { 
+                juce::ignoreUnused(parameterID);
+                mCallback(newValue); 
+            }
+        private:
+            std::function<void(const float&)> mCallback;
+    };
+
+    void attachParameter(
+        juce::AudioProcessorValueTreeState::ParameterLayout& layout,
+        const juce::String& id, 
+        const juce::String& name, 
+        const juce::NormalisableRange<float>& range, 
+        const float& defaultValue
+    );
+    void attachListener(const juce::String& id, const std::function<void(const float&)>& callback);
+
+    std::vector<ParameterListener*> mOwnedListeners;
     minilogue::Minilogue mMinilogue;
 
-private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessor)
 };

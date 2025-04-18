@@ -11,13 +11,6 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (400, 300);
-
-    mFineTuneSlider.addListener(this);
-
-    mFineTuneSlider.setSliderStyle(juce::Slider::SliderStyle::Rotary);
-    mFineTuneSlider.setRange(-1.0f, 1.0f, 0.001f);
-    mFineTuneSlider.setValue(0.0f);
-    addAndMakeVisible(mFineTuneSlider);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -33,13 +26,6 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 
 void AudioPluginAudioProcessorEditor::resized()
 {
-    mFineTuneSlider.setBounds(getLocalBounds());
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-}
-
-void AudioPluginAudioProcessorEditor::sliderValueChanged(juce::Slider* slider) {
-    if(slider == &mFineTuneSlider) {
-        processorRef.mMinilogue.setVCO1FineTune((float)mFineTuneSlider.getValue());
-    }
 }
