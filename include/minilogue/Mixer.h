@@ -8,15 +8,10 @@ namespace minilogue {
 class Mixer {
 public:
 
+  friend class Minilogue;
+
   static constexpr float DEFAULT_VCO_LEVEL = 1.0f;
   static constexpr float DEFAULT_NOISE_LEVEL = 0.0f;
-
-  Mixer(void);
-  Mixer(const float& vco1Level, const float& vco2Level, const float& noiseLevel);
-
-  void setVco1Level(const float& level);
-  void setVco2Level(const float& level);
-  void setNoiseLevel(const float& level);
 
   [[nodiscard]] float getVco1Level(void) { return mVco1Level; }
   [[nodiscard]] float getVco2Level(void) { return mVco2Level; }
@@ -26,6 +21,13 @@ public:
 
 private:
 
+  Mixer(void);
+  Mixer(const float& vco1Level, const float& vco2Level, const float& noiseLevel);
+  
+  void setVco1Level(const float& level);
+  void setVco2Level(const float& level);
+  void setNoiseLevel(const float& level);
+  
   NoiseGenerator mNoiseGenerator;
 
   float mVco1Level;

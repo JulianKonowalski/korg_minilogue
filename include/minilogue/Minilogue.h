@@ -6,6 +6,7 @@
 #include "minilogue/VCO.h"
 #include "minilogue/Voice.h"
 #include "minilogue/Mixer.h"
+#include "minilogue/EnvelopeGenerator.h"
 
 namespace minilogue {
 
@@ -44,10 +45,12 @@ private:
   VCO mVco2;
   Voice mVoice;
   Mixer mMixer;
+  EnvelopeGenerator mAmp;
 
   /**
+   * VCOModulator mVco2Modulator;
    * Filter mFilter;
-   * Amp mAmp;
+   * EnvelopeGenerator mEG;
    * Delay mDelay;
    * 
    * Slider mSlider; //pitch slider

@@ -3,7 +3,7 @@
 using namespace minilogue;
 
 Minilogue::Minilogue(void) : 
-  mVoice(mVco1, mVco2, mMixer) 
+  mVoice(mVco1, mVco2, mMixer, mAmp) 
 {}
 
 void Minilogue::noteOn(

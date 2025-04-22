@@ -102,6 +102,7 @@ add_library(
     src/minilogue/Voice.cpp
     src/minilogue/Mixer.cpp
     src/minilogue/NoiseGenerator.cpp
+    src/minilogue/EnvelopeGenerator.cpp
 )
 
 # `target_link_libraries` links libraries and JUCE modules to other libraries or executables. Here,
