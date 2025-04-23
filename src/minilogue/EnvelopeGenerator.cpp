@@ -78,7 +78,7 @@ void EnvelopeGenerator::setRelease(const float& release) {
   float& timePoint, 
   ENVELOPE_STATE& envelopeState
 ) {
-  sample *= timePoint;
+  sample *= 1.0f - std::exp(-timePoint * 2.0f);
   timePoint += Minilogue::getOffset() / mAttack;
   if(timePoint > 1.0f) { 
     envelopeState = ENVELOPE_STATE::DECAY;
@@ -92,9 +92,10 @@ void EnvelopeGenerator::setRelease(const float& release) {
   float& timePoint, 
   ENVELOPE_STATE& envelopeState
 ) {
-  sample *= 1.0f - timePoint;
+  float coeff = std::exp(-timePoint);
+  sample *= coeff;
   timePoint += Minilogue::getOffset() / mDecay;
-  if(1.0f - timePoint < mSustain) {
+  if(coeff < mSustain) {
     envelopeState = ENVELOPE_STATE::SUSTAIN;
     timePoint = 0.0f;
   }
@@ -106,9 +107,10 @@ void EnvelopeGenerator::setRelease(const float& release) {
   float& timePoint, 
   ENVELOPE_STATE& envelopeState
 ) {
-  sample *= mSustain - timePoint;
+  float coeff = std::exp(-timePoint);
+  sample *= mSustain * coeff;
   timePoint += Minilogue::getOffset() / mRelease;
-  if(mSustain - timePoint < 0.0f) {
+  if(coeff < 0.000001) {
     envelopeState = ENVELOPE_STATE::IDLE;
     timePoint = 0.0f;
   }
