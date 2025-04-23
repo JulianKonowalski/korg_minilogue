@@ -12,6 +12,15 @@ namespace minilogue {
 
 class Minilogue {
 public:
+
+  static void setSampleRate(const unsigned int& sampleRate) { 
+    sSampleRate = sampleRate; 
+    sOffset = 1.0f / sSampleRate;
+  }
+
+  static [[nodiscard]] float getOffset(void) { return sOffset; }
+  static [[nodiscard]] int getSampleRate(void) { return sSampleRate; }
+
   Minilogue(void);
 
   /* VCO SETTINGS */
@@ -32,12 +41,22 @@ public:
   void setVCO2Level(const float& level) { mMixer.setVco2Level(level); }
   void setNoiseLevel(const float& level) { mMixer.setNoiseLevel(level); }
  
+  /* AMP SETTINGS */
+  void setAmpAttack(const float& value) { mAmp.setAttack(value); }
+  void setAmpDecay(const float& value) { mAmp.setDecay(value); }
+  void setAmpSustain(const float& value) { mAmp.setSustain(value); }
+  void setAmpRelease(const float& value) { mAmp.setRelease(value); }
+
   /* NOTE PLAYBACK */
   void noteOn(const int& midiNoteNumber, const int& midiNoteVelocity, const int& samplePosition);
   void noteOff(const int& midiNoteNumber, const int& midiNoteVelocity, const int& samplePosition);
   void processBlock(float* lChannelBuffer, float* rChannelBuffer, const int& bufferSize);
 
 private:
+
+  static constexpr unsigned int DEFAULT_SAMPLE_RATE = 44100;
+  inline static unsigned int sSampleRate = DEFAULT_SAMPLE_RATE;
+  inline static float sOffset = 1.0f / sSampleRate;
 
   float getSample(void);
 

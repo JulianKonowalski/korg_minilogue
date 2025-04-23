@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "minilogue/Minilogue.h"
+
 using namespace minilogue;
 
 VCO::VCO(void) :
@@ -9,9 +11,7 @@ VCO::VCO(void) :
   mOscType(DEFAULT_OSC_TYPE),
   mFineTune(DEFAULT_FINE_TUNE),
   mShape(DEFAULT_SHAPE)
-{
-  this->recalculateDelta();
-}
+{}
 
 void VCO::setOctave(const uint8_t& octave) {
   if (octave > 3) { mOctave = 3; }
@@ -37,7 +37,7 @@ void VCO::setShape(const float& shape) {
 [[nodiscard]] float VCO::getSample (float& angle, float frequency) {
   if(mFineTune != 0.0f) { frequency *= std::powf(2, mFineTune); }
   frequency *= OCTAVE_COEFFICIENTS[mOctave];
-  float offset = frequency * mDeltaTime;
+  float offset = frequency * Minilogue::getOffset();
   angle += offset;
   angle -= angle > 1.0f ? 1.0f : 0.0f;
   switch (mOscType) {

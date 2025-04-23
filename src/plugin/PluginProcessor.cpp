@@ -26,6 +26,12 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
     this->attachListener("vco1Vol", [&](const float& value){ this->getSynth().setVCO1Level(value); });
     this->attachListener("vco2Vol", [&](const float& value){ this->getSynth().setVCO2Level(value); });
     this->attachListener("noiseVol", [&](const float& value){ this->getSynth().setNoiseLevel(value); });
+
+    /* AMP SETTINGS */
+    this->attachListener("ampAtt", [&](const float& value){ this->getSynth().setAmpAttack(value); });
+    this->attachListener("ampDec", [&](const float& value){ this->getSynth().setAmpDecay(value); });
+    this->attachListener("ampSus", [&](const float& value){ this->getSynth().setAmpSustain(value); });
+    this->attachListener("ampRel", [&](const float& value){ this->getSynth().setAmpRelease(value); });
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -210,6 +216,12 @@ AudioPluginAudioProcessor::createParameterLayout(void) {
     this->attachParameter(layout, "vco1Vol", "VCO1 Volume", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 1.0f);
     this->attachParameter(layout, "vco2Vol", "VCO2 Volume", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 1.0f);
     this->attachParameter(layout, "noiseVol", "Noise Volume", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 0.0f);
+
+    /* AMP SETTINGS */
+    this->attachParameter(layout, "ampAtt", "Amp Attack", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 0.0f);
+    this->attachParameter(layout, "ampDec", "Amp Decay", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 0.0f);
+    this->attachParameter(layout, "ampSus", "Amp Sustain", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 1.0f);
+    this->attachParameter(layout, "ampRel", "Amp Release", juce::NormalisableRange(0.0f, 1.0f, 0.01f), 0.0f);
 
     return layout;
 }

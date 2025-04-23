@@ -14,12 +14,8 @@ public:
     TRIANGLE,
     SQUARE
   };
-  
-  static void setSampleRate(const int& sampleRate) { sSampleRate = sampleRate; }
 
   VCO(void);
-
-  void recalculateDelta(void) { mDeltaTime = 1.0f / sSampleRate; }
 
   void setOctave(const uint8_t& octave);
   void setOscillatorType(const OSC_TYPE& oscType);
@@ -39,12 +35,9 @@ private:
   static constexpr OSC_TYPE DEFAULT_OSC_TYPE = SAWTOOTH;
   static constexpr float DEFAULT_FINE_TUNE = 0.0f;
   static constexpr float DEFAULT_SHAPE = 0.0f;
-  static constexpr int DEFAULT_SAMPLE_RATE = 44100;
 
   static constexpr short FINE_RANGE = 1200;
   static constexpr float OCTAVE_COEFFICIENTS[4] = {0.5f, 1.0f, 2.0f, 4.0f};
-  
-  inline static int sSampleRate = DEFAULT_SAMPLE_RATE;
 
   [[nodiscard]] float polyBLEP(float t, float dt);
 
@@ -56,7 +49,6 @@ private:
   OSC_TYPE mOscType;
   float mFineTune;
   float mShape;
-  float mDeltaTime;
 
 };
   

@@ -1,5 +1,7 @@
 #include "minilogue/EnvelopeGenerator.h"
 
+#include "minilogue/Minilogue.h"
+
 using namespace minilogue;
 
 EnvelopeGenerator::EnvelopeGenerator(void) :
@@ -77,7 +79,7 @@ void EnvelopeGenerator::setRelease(const float& release) {
   ENVELOPE_STATE& envelopeState
 ) {
   sample *= timePoint;
-  timePoint += 1.0f / 44100;
+  timePoint += Minilogue::getOffset() / mAttack;
   if(timePoint > 1.0f) { 
     envelopeState = ENVELOPE_STATE::DECAY;
     timePoint = 0.0f; 
@@ -90,7 +92,12 @@ void EnvelopeGenerator::setRelease(const float& release) {
   float& timePoint, 
   ENVELOPE_STATE& envelopeState
 ) {
-  envelopeState = ENVELOPE_STATE::SUSTAIN;
+  sample *= 1.0f - timePoint;
+  timePoint += Minilogue::getOffset() / mDecay;
+  if(1.0f - timePoint < mSustain) {
+    envelopeState = ENVELOPE_STATE::SUSTAIN;
+    timePoint = 0.0f;
+  }
   return sample;
 }
 
@@ -99,9 +106,9 @@ void EnvelopeGenerator::setRelease(const float& release) {
   float& timePoint, 
   ENVELOPE_STATE& envelopeState
 ) {
-  sample *= 1.0f - timePoint;
-  timePoint += 1.0f / 44100;
-  if(timePoint > 1.0f) {
+  sample *= mSustain - timePoint;
+  timePoint += Minilogue::getOffset() / mRelease;
+  if(mSustain - timePoint < 0.0f) {
     envelopeState = ENVELOPE_STATE::IDLE;
     timePoint = 0.0f;
   }
