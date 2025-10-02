@@ -30,7 +30,7 @@ private:
 
   static constexpr float DEFAULT_ATTACK = 0.0f;
   static constexpr float DEFAULT_DECAY = 0.0f; 
-  static constexpr float DEFAULT_SUSTAIN = 0.5f;
+  static constexpr float DEFAULT_SUSTAIN = 1.0f;
   static constexpr float DEFAULT_RELEASE = 0.0f;
 
   static constexpr float MAX_ATTACK_SECONDS = 1.0f;

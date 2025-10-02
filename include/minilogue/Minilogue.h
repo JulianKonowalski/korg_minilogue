@@ -18,8 +18,8 @@ public:
     sOffset = 1.0f / sSampleRate;
   }
 
-  static [[nodiscard]] float getOffset(void) { return sOffset; }
-  static [[nodiscard]] int getSampleRate(void) { return sSampleRate; }
+  [[nodiscard]] static float getOffset(void) { return sOffset; }
+  [[nodiscard]] static int getSampleRate(void) { return sSampleRate; }
 
   Minilogue(void);
 
